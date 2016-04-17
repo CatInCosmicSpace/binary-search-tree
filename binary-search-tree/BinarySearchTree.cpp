@@ -81,7 +81,7 @@ size_t BinarySearchTree<T>::getNumber() const {
 }
 
 template <typename T>	// WORKS
-bool BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os = std::cout) const {
+bool BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os = std::cout) {
 	if (m_node == nullptr) {
 		return true;
 	}
