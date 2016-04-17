@@ -61,13 +61,14 @@ public:
 	BinarySearchTree(size_t k) : root(nullptr), count(k), existed(0) {};	// TESTED
 
 	bool		insert(const T &node);							// TESTED
-	node<T> *	search(const T &key);							// 
+	node<T> *	search(const T &key);							// TESTED
 	size_t		getCount() const;								// TESTED
+	size_t		getNumber() const;								// TESTED
 
-	friend		ostream & operator<< <>(ostream &output, const BinarySearchTree &);	//
-	friend		istream & operator>> <>(istream &input, BinarySearchTree &);		//
-	friend		fstream & operator<< <>(fstream &file, BinarySearchTree<T> &);		//
-	friend		fstream & operator>> <>(fstream &file, BinarySearchTree<T> &);		//
+	friend		ostream & operator<< <>(ostream &output, const BinarySearchTree &);	// TESTED
+	friend		istream & operator>> <>(istream &input, BinarySearchTree &);		// TESTED
+	friend		fstream & operator<< <>(fstream &file, BinarySearchTree<T> &);		// TESTED
+	friend		fstream & operator>> <>(fstream &file, BinarySearchTree<T> &);		// TESTED
 };
 
 #include "BinarySearchTree.cpp"

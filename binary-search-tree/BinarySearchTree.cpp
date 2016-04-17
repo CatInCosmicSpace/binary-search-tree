@@ -75,6 +75,11 @@ size_t BinarySearchTree<T>::getCount() const {
 	return this->count;
 }
 
+template<typename T>	// WORKS
+size_t BinarySearchTree<T>::getNumber() const {
+	return this->existed;
+}
+
 template <typename T>	// WORKS
 bool BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os = std::cout) const {
 	if (m_node == nullptr) {
@@ -85,7 +90,7 @@ bool BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os 
 	print(m_node->right, os);
 }
 
-template <typename T>	// WORKS, вроде как
+template <typename T>	// WORKS
 ostream & operator <<(ostream & os, const BinarySearchTree<T> & x) {
 	if (x.root == nullptr) {
 		throw emptyTree();
@@ -95,29 +100,33 @@ ostream & operator <<(ostream & os, const BinarySearchTree<T> & x) {
 	return os;
 }
 
-template <typename T>	// WORKS, вроде как
+template <typename T>	// WORKS
 istream & operator >>(istream & input, BinarySearchTree<T> & x) {
 	T temp;
-	size_t steps = x.existed;
-	for (size_t i = 0; i < steps; ++i) {
-		try {
-			if (input >> temp) {
-				x.insert(temp);
+	if (x.count == 0) {
+		throw emptyTree();
+	}
+	else {
+		for (size_t i = 0; i < x.count; ++i) {
+			try {
+				if (input >> temp) {
+					x.insert(temp);
+				}
+				else {
+					throw invalidFile();
+				}
 			}
-			else {
+			catch (...) {
 				throw invalidFile();
 			}
 		}
-		catch (...) {
-			throw invalidFile();
-		}
+		return input;
 	}
-	return input;
 }
 
-template <typename T>	// MAYBE
+template <typename T>	//WORKS
 fstream & operator <<(fstream &file, BinarySearchTree<T> & x) {
-	if (x.root == nullptr) {
+	if (x.count == 0) {
 		throw emptyTree();
 	}
 	x.print(x.root, file);
@@ -125,22 +134,27 @@ fstream & operator <<(fstream &file, BinarySearchTree<T> & x) {
 	return file;
 }
 
-template <typename T>	// WORKS, вроде как
+template <typename T>	// WORKS
 fstream & operator >>(fstream &file, BinarySearchTree<T> & x) {
 	T temp;
-	for (size_t i = 0; i < x.existed; ++i) {
-		try {
-			if (file >> temp) {
-				x.insert(temp);
+	if (x.count == 0) {
+		throw emptyTree();
+	}
+	else {
+		for (size_t i = 0; i < x.count; ++i) {
+			try {
+				if (file >> temp) {
+					x.insert(temp);
+				}
+				else {
+					throw invalidFile();
+				}
 			}
-			else {
+			catch (...) {
 				throw invalidFile();
 			}
 		}
-		catch (...) {
-			throw invalidFile();
-		}
+		return file;
 	}
-	return file;
 }
 #endif

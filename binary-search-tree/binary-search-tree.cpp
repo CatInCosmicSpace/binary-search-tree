@@ -13,6 +13,8 @@ int main() {
 		f >> t;
 
 		f1 << t;
+		cout << f.is_open();
+		cout << t;
 
 		cout << t.search(1) << endl;
 		cout << t.search(4) << endl;
