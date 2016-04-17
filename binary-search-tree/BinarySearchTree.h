@@ -15,10 +15,10 @@ using std::fstream;
 #ifndef BT_H
 #define BT_H
 
-class emptyTree : public exception {};
-class ivalidKey : public exception {};
-class invalidFile : public exception {};
-class searchError : public exception {};
+class emptyTree 	: public exception {};
+class ivalidKey 	: public exception {};
+class invalidFile 	: public exception {};
+class searchError 	: public exception {};
 
 
 template <typename T>
@@ -57,8 +57,8 @@ private:
 	bool		print(const unique_ptr<node<T>>&, ostream &);
 	node<T> *	search(const T &key, node<T>* leaf);
 public:
-	BinarySearchTree() : root(nullptr), count(0), existed(0) {};		// TESTED
-	BinarySearchTree(size_t k) : root(nullptr), count(k), existed(0) {};	// TESTED
+	BinarySearchTree() 		: root(nullptr), count(0), existed(0) {};		// TESTED
+	BinarySearchTree(size_t k) 	: root(nullptr), count(k), existed(0) {};		// TESTED
 
 	bool		insert(const T &node);							// TESTED
 	node<T> *	search(const T &key);							// TESTED
