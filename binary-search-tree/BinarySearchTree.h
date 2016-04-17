@@ -40,7 +40,7 @@ template <typename T>
 struct node {
 	typedef unique_ptr<node<T>> ptrNode;
 
-	T			data;
+	T		data;
 	ptrNode		left;
 	ptrNode		right;
 	node(const T & value) : data(value), left(nullptr), right(nullptr) {};
@@ -57,13 +57,13 @@ private:
 	bool		print(const unique_ptr<node<T>>&, ostream &);
 	node<T> *	search(const T &key, node<T>* leaf);
 public:
-	BinarySearchTree() : root(nullptr), count(0), existed(0) {};	// TESTED
+	BinarySearchTree() : root(nullptr), count(0), existed(0) {};		// TESTED
 	BinarySearchTree(size_t k) : root(nullptr), count(k), existed(0) {};	// TESTED
 
 	bool		insert(const T &node);							// TESTED
 	node<T> *	search(const T &key);							// TESTED
-	size_t		getCount() const;								// TESTED
-	size_t		getNumber() const;								// TESTED
+	size_t		getCount() const;							// TESTED
+	size_t		getNumber() const;							// TESTED
 
 	friend		ostream & operator<< <>(ostream &output, const BinarySearchTree &);	// TESTED
 	friend		istream & operator>> <>(istream &input, BinarySearchTree &);		// TESTED
