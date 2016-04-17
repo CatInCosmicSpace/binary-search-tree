@@ -54,7 +54,7 @@ private:
 	size_t		count;
 	size_t		existed;
 
-	bool		print(const unique_ptr<node<T>>&, ostream &);
+	bool		print(const unique_ptr<node<T>> &m_node, ostream & os = cout);
 	node<T> *	search(const T &key, node<T>* leaf);
 public:
 	BinarySearchTree() : root(nullptr), count(0), existed(0) {};	// TESTED
