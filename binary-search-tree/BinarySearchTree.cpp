@@ -4,6 +4,7 @@
 
 using std::unique_ptr;
 using std::move;
+using std::cout;
 using std::ostream;
 using std::istream;
 using std::fstream;
@@ -81,7 +82,7 @@ size_t BinarySearchTree<T>::getNumber() const {
 }
 
 template <typename T>	// WORKS
-bool BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os = std::cout) {
+bool BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os = cout) {
 	if (m_node == nullptr) {
 		return true;
 	}
