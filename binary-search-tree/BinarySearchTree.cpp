@@ -47,6 +47,32 @@ bool BinarySearchTree<T>::insert(const T &ref) {
 }
 
 template <typename T>	// WORKS
+bool BinarySearchTree<T>::remove(const T &key) {
+	return remove(key, this->root);
+}
+
+template<typename T>	// WORKS
+bool BinarySearchTree<T>::remove(const T &key, unique_ptr<node<T>> &leaf) {
+	if (leaf != nullptr) {
+		if (key == leaf->data) {
+			leaf.reset();
+
+			return true;
+		}
+		if (key < leaf->data) {
+			return remove(key, leaf->left);
+		}
+		else {
+			return remove(key, leaf->right);
+		}
+	}
+	else {
+		throw std::logic_error("Remove error");
+	}
+	return true;
+}
+
+template <typename T>	// WORKS
 node<T> * BinarySearchTree<T>::search(const T &key) {
 	node<T>* leaf = root.get();
 	return search(key, leaf);
@@ -66,7 +92,7 @@ node<T> * BinarySearchTree<T>::search(const T & key, node<T>* leaf) {
 		}
 	}
 	else {
-		throw searchError();
+		throw std::invalid_argument("Wrong index");
 	}
 }
 
@@ -82,18 +108,24 @@ size_t BinarySearchTree<T>::getNumber() const {
 
 template <typename T>	// WORKS
 bool BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os = std::cout) {
-	if (m_node == nullptr) {
+	node<T>* tmp = m_node.get();
+
+	if (m_node.get() == nullptr) {
 		return true;
 	}
-	print(m_node->left, os);
+	if (tmp->left.get() != nullptr) {
+		print(tmp->left, os);
+	}
 	os << m_node->data << endl;
-	print(m_node->right, os);
+	if (tmp->right.get()) {
+		print(tmp->right, os);
+	}
 }
 
 template <typename T>	// WORKS
-ostream & operator <<(ostream & os, const BinarySearchTree<T> & x) {
+ostream & operator <<(ostream & os, BinarySearchTree<T> & x) {
 	if (x.root == nullptr) {
-		throw emptyTree();
+		throw std::logic_error("Empty tree");
 	}
 	x.print(x.root, os);
 
@@ -104,20 +136,15 @@ template <typename T>	// WORKS
 istream & operator >>(istream & input, BinarySearchTree<T> & x) {
 	T temp;
 	if (x.count == 0) {
-		throw emptyTree();
+		throw std::logic_error("Empty tree");
 	}
 	else {
 		for (size_t i = 0; i < x.count; ++i) {
-			try {
-				if (input >> temp) {
-					x.insert(temp);
-				}
-				else {
-					throw invalidFile();
-				}
+			if (input >> temp) {
+				x.insert(temp);
 			}
-			catch (...) {
-				throw invalidFile();
+			else {
+				throw std::logic_error("Error in input stream");
 			}
 		}
 		return input;
@@ -127,7 +154,7 @@ istream & operator >>(istream & input, BinarySearchTree<T> & x) {
 template <typename T>	//WORKS
 fstream & operator <<(fstream &file, BinarySearchTree<T> & x) {
 	if (x.count == 0) {
-		throw emptyTree();
+		throw std::logic_error("Empty tree");
 	}
 	x.print(x.root, file);
 
@@ -138,20 +165,15 @@ template <typename T>	// WORKS
 fstream & operator >>(fstream &file, BinarySearchTree<T> & x) {
 	T temp;
 	if (x.count == 0) {
-		throw emptyTree();
+		throw std::logic_error("Empty tree");
 	}
 	else {
 		for (size_t i = 0; i < x.count; ++i) {
-			try {
-				if (file >> temp) {
-					x.insert(temp);
-				}
-				else {
-					throw invalidFile();
-				}
+			if (file >> temp) {
+				x.insert(temp);
 			}
-			catch (...) {
-				throw invalidFile();
+			else {
+				throw std::logic_error("Error in input stream");
 			}
 		}
 		return file;
