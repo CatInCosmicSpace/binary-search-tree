@@ -53,9 +53,9 @@ auto BinarySearchTree<T>::remove(const T &key) -> node<T> * {
 	return remove(key, leaf);
 }
 
-template<typename T>	// ÑËÎÆÍO, ÍÎ WORKS
+template<typename T>	// HARD, BUT WORKS
 auto BinarySearchTree<T>::remove(const T &key, node<T> * leaf) -> node<T> * {
-	// Ñ - crutches
+	// C - crutches
 	if (leaf == nullptr) {
 		return leaf;
 	}
@@ -63,12 +63,14 @@ auto BinarySearchTree<T>::remove(const T &key, node<T> * leaf) -> node<T> * {
 	if ((leaf->left.get() != nullptr) && ((leaf->left.get())->data == key)) {
 		if (((leaf->left.get())->left.get() == nullptr) && ((leaf->left.get())->right.get() == nullptr)) {
 			leaf->left.reset();
+			this->existed -= 1;
 			return leaf;
 		}
 	}
 	else if ((leaf->right.get() != nullptr) && ((leaf->right.get())->data == key)) {
 		if (((leaf->right.get())->left.get() == nullptr) && ((leaf->right.get())->right.get() == nullptr)) {
 			leaf->right.reset();
+			this->existed -= 1;
 			return leaf;
 		}
 	}
@@ -80,17 +82,20 @@ auto BinarySearchTree<T>::remove(const T &key, node<T> * leaf) -> node<T> * {
 	}
 	else if ((leaf->left.get() != nullptr) && (leaf->right.get() != nullptr)) {
 		leaf->data = findMin(leaf->right)->data;
+		this->existed -= 1;
 		return leaf;
 	}
 	else {
 		if (leaf->left.get() != nullptr) {
 			leaf->data = (leaf->left.get())->data;
 			leaf->left.reset();
+			this->existed -= 1;
 			return leaf;
 		}
 		else {
 			leaf->data = (leaf->right.get())->data;
 			leaf->right = move((leaf->right.get())->right);
+			this->existed -= 1;
 			return leaf;
 		}
 	}
