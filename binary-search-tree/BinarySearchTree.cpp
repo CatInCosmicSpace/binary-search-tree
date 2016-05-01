@@ -13,7 +13,7 @@ using std::endl;
 #define BT_CPP
 
 template <typename T>	// WORKS
-bool BinarySearchTree<T>::insert(const T &ref) {
+auto BinarySearchTree<T>::insert(const T &ref) -> bool {
 	this->existed += 1;
 	unique_ptr<node<T>> m_node(new node<T>(ref));
 
@@ -47,39 +47,81 @@ bool BinarySearchTree<T>::insert(const T &ref) {
 }
 
 template <typename T>	// WORKS
-bool BinarySearchTree<T>::remove(const T &key) {
-	return remove(key, this->root);
+auto BinarySearchTree<T>::remove(const T &key) -> node<T> * {
+	if (search(key) == nullptr) {
+		throw std::invalid_argument("Wrong index");
+	}
+	node<T> * leaf = root.get();
+	return remove(key, leaf);
 }
 
-template<typename T>	// WORKS
-bool BinarySearchTree<T>::remove(const T &key, unique_ptr<node<T>> &leaf) {
-	if (leaf != nullptr) {
-		if (key == leaf->data) {
-			leaf.reset();
+template<typename T>	// ÑËÎÆÍO, ÍÎ WORKS
+auto BinarySearchTree<T>::remove(const T &key, node<T> * leaf) -> node<T> * {
+	// Ñ - crutches
+	if (leaf == nullptr) {
+		return leaf;
+	}
 
-			return true;
+	if ((leaf->left.get() != nullptr) && ((leaf->left.get())->data == key)) {
+		if (((leaf->left.get())->left.get() == nullptr) && ((leaf->left.get())->right.get() == nullptr)) {
+			leaf->left.reset();
+			return leaf;
 		}
-		if (key < leaf->data) {
-			return remove(key, leaf->left);
+	}
+	else if ((leaf->right.get() != nullptr) && ((leaf->right.get())->data == key)) {
+		if (((leaf->right.get())->left.get() == nullptr) && ((leaf->right.get())->right.get() == nullptr)) {
+			leaf->right.reset();
+			return leaf;
 		}
-		else {
-			return remove(key, leaf->right);
-		}
+	}
+	if (key < leaf->data) {
+		leaf = remove(key, leaf->left.get());
+	}
+	else if (key > leaf->data) {
+		leaf = remove(key, leaf->right.get());
+	}
+	else if ((leaf->left.get() != nullptr) && (leaf->right.get() != nullptr)) {
+		leaf->data = findMin(leaf->right)->data;
+		return leaf;
 	}
 	else {
-		throw std::logic_error("Remove error");
+		if (leaf->left.get() != nullptr) {
+			leaf->data = (leaf->left.get())->data;
+			leaf->left.reset();
+			return leaf;
+		}
+		else {
+			leaf->data = (leaf->right.get())->data;
+			leaf->right = move((leaf->right.get())->right);
+			return leaf;
+		}
 	}
-	return true;
+	return leaf;
+}
+
+template<typename T>	// Works?.. Hmm...
+auto BinarySearchTree<T>::findMin(unique_ptr<node<T>>& leaf) -> node<T> * {
+	if (leaf->left.get() == nullptr) {
+		node<T> *tmp = new node<T>(leaf.get()->data);
+		if (((leaf.get())->right).get() == nullptr) {
+			leaf.reset();
+		}
+		else {
+			leaf = move((leaf.get()->right));
+		}
+		return tmp;
+	}
+	return findMin(leaf->left);
 }
 
 template <typename T>	// WORKS
-node<T> * BinarySearchTree<T>::search(const T &key) {
+auto BinarySearchTree<T>::search(const T &key) -> node<T> * {
 	node<T>* leaf = root.get();
 	return search(key, leaf);
 }
 
 template <typename T>	// WORKS
-node<T> * BinarySearchTree<T>::search(const T & key, node<T>* leaf) {
+auto BinarySearchTree<T>::search(const T & key, node<T>* leaf) -> node<T> * {
 	if (leaf != nullptr) {
 		if (key == leaf->data) {
 			return leaf;
@@ -97,17 +139,17 @@ node<T> * BinarySearchTree<T>::search(const T & key, node<T>* leaf) {
 }
 
 template <typename T>	// WORKS
-size_t BinarySearchTree<T>::getCount() const {
+auto BinarySearchTree<T>::getCount() const -> size_t {
 	return this->count;
 }
 
 template<typename T>	// WORKS
-size_t BinarySearchTree<T>::getNumber() const {
+auto BinarySearchTree<T>::getNumber() const -> size_t {
 	return this->existed;
 }
 
 template <typename T>	// WORKS
-bool BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os = std::cout) {
+auto BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os = std::cout) -> bool {
 	node<T>* tmp = m_node.get();
 
 	if (m_node.get() == nullptr) {

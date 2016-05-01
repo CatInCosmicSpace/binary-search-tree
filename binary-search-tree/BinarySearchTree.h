@@ -48,18 +48,19 @@ private:
 	size_t		count;
 	size_t		existed;
 
-	bool		print(const unique_ptr<node<T>>&, ostream &);
-	bool		remove(const T & key, unique_ptr<node<T>> &leaf);
-	node<T> *	search(const T &key, node<T>* leaf);
+	auto		print(const unique_ptr<node<T>>&, ostream &) -> bool;
+	auto		remove(const T & key, node<T> * leaf) -> node<T> *;
+	auto		findMin(unique_ptr<node<T>>& leaf) -> node<T> *;
+	auto		search(const T &key, node<T>* leaf) -> node<T> *;
 public:
 	BinarySearchTree() : root(nullptr), count(0), existed(0) {};			// TESTED
 	BinarySearchTree(size_t k) : root(nullptr), count(k), existed(0) {};	// TESTED
 
-	bool		insert(const T &node);							// TESTED
-	bool		remove(const T &key);
-	node<T> *	search(const T &key);							// TESTED
-	size_t		getCount() const;								// TESTED
-	size_t		getNumber() const;								// TESTED
+	auto		insert(const T &node) -> bool;								// TESTED
+	auto		remove(const T &key) -> node<T> *;
+	auto		search(const T &key) -> node<T> *;							// TESTED
+	auto		getCount() const -> size_t;									// TESTED
+	auto		getNumber() const -> size_t;								// TESTED
 
 	friend		ostream & operator<< <>(ostream &output, BinarySearchTree &);		// TESTED
 	friend		istream & operator>> <>(istream &input, BinarySearchTree &);		// TESTED
