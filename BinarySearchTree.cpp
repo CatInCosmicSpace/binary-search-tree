@@ -1,6 +1,4 @@
-#include "stdafx.h"
 #include "BinarySearchTree.h"
-#include <stdexcept>
 
 using std::unique_ptr;
 using std::move;

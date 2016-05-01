@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "BinarySearchTree.h"
 
 using std::cout;
@@ -9,7 +8,7 @@ int main() {
 	try {
 		BinarySearchTree<int> t(10);
 
-		fstream f("test.txt"), f1("more.txt");
+		fstream f("input.txt"), f1("output.txt");
 		f >> t;
 
 		f1 << t;
