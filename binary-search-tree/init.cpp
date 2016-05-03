@@ -73,6 +73,5 @@ SCENARIO("Tree: remove", "[remove]") {
 	}
 	fin1.close();
 	fout.close();
-	getchar();
 	REQUIRE(flag);
 }
