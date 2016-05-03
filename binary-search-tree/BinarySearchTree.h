@@ -47,19 +47,19 @@ private:
 	size_t		count;
 	size_t		existed;
 
-	auto		print(const unique_ptr<node<T>>&, ostream &, size_t width = 0)	-> bool;
-	auto		remove(const T & key, node<T> * leaf)			-> node<T> *;
-	auto		findMin(unique_ptr<node<T>>& leaf)				-> node<T> *;
-	auto		search(const T &key, node<T>* leaf)				-> node<T> *;
+	auto		print(const unique_ptr<node<T>>&, ostream&, size_t) -> bool;
+	auto		remove(const T&, node<T>*) -> node<T> *;
+	auto		findMin(unique_ptr<node<T>>&) -> node<T> *;
+	auto		search(const T&, node<T>*) -> node<T> *;
 public:
 	BinarySearchTree() : root(nullptr), count(0), existed(0) {};					// TESTED
 	BinarySearchTree(size_t k) : root(nullptr), count(k), existed(0) {};			// TESTED
 
-	auto		insert(const T &node)	-> bool;									// TESTED
-	auto		remove(const T &key)	-> node<T> *;								// tested?..
-	auto		search(const T &key)	-> node<T> *;								// TESTED
-	auto		getCount()	const		-> size_t;									// TESTED
-	auto		getNumber() const		-> size_t;									// TESTED
+	auto		insert(const T&) -> bool;									// TESTED
+	auto		remove(const T&) -> node<T> *;								// tested?..
+	auto		search(const T&) -> node<T> *;								// TESTED
+	auto		getCount() const -> size_t;									// TESTED
+	auto		getNumber() const -> size_t;									// TESTED
 
 	friend		ostream & operator<< <>(ostream &output, BinarySearchTree &);		// TESTED
 	friend		istream & operator>> <>(istream &input, BinarySearchTree &);		// TESTED
