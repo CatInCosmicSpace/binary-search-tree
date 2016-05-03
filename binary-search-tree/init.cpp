@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "BinarySearchTree.h"
 #include <catch.hpp>
 #include <fstream>
@@ -30,41 +29,50 @@ SCENARIO("Tree: search", "[search]") {
 }
 
 SCENARIO("Tree: operator >>", "[file and stream input]") {
-	BinarySearchTree<size_t> b(5);
+	BinarySearchTree<size_t> b(10);
 	fstream fin("input.txt");
 	fin >> b;
 	fin.close();
 
-	REQUIRE(b.search(1) != nullptr);
-	REQUIRE(b.search(2) != nullptr);
+	REQUIRE(b.search(10) != nullptr);
+	REQUIRE(b.search(7) != nullptr);
 	REQUIRE(b.search(3) != nullptr);
-	REQUIRE(b.search(4) != nullptr);
-	REQUIRE(b.search(5) != nullptr);
+	REQUIRE(b.search(9) != nullptr);
+	REQUIRE(b.search(8) != nullptr);
 }
 
 SCENARIO("Tree: operator <<", "[file and stream output]") {
-	BinarySearchTree<size_t> b1(5), b2(5);
+	BinarySearchTree<size_t> b1(10), b2(10);
 	fstream fin("input.txt"), fout1("output.txt"), fout2("output.txt");
 	fin >> b1;
 	fout1 << b1;
 	fout2 >> b2;
-	REQUIRE(b2.search(1) != nullptr);
-	REQUIRE(b2.search(2) != nullptr);
+	fin.close();
+	fout1.close();
+	fout2.close();
+
+	REQUIRE(b2.search(10) != nullptr);
+	REQUIRE(b2.search(7) != nullptr);
 	REQUIRE(b2.search(3) != nullptr);
-	REQUIRE(b2.search(4) != nullptr);
-	REQUIRE(b2.search(5) != nullptr);
+	REQUIRE(b2.search(9) != nullptr);
+	REQUIRE(b2.search(8) != nullptr);
 }
 
-// EXCEPTION TIME
-SCENARIO("Tree: empty", "[empty]") {
-	BinarySearchTree<size_t> b;
-	fstream fin("input.txt");
+SCENARIO("Tree: remove", "[remove]") {
+	BinarySearchTree<size_t> b1(10);
+	fstream fin1("input.txt"), fout("afterDel.txt");
+	fin1 >> b1;
+	fout << b1;
+	b1.remove(7);
 	bool flag = false;
 	try {
-		fin >> b;
+		b1.search(7);
 	}
-	catch (emptyTree e) {
+	catch (std::invalid_argument &e) {
 		flag = true;
 	}
+	fin1.close();
+	fout.close();
+	getchar();
 	REQUIRE(flag);
 }

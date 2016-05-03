@@ -1,10 +1,7 @@
-#include "stdafx.h"
-#include "BinarySearchTree.h"
-#include <stdexcept>
+﻿#include "BinarySearchTree.h"
 
 using std::unique_ptr;
 using std::move;
-using std::cout;
 using std::ostream;
 using std::istream;
 using std::fstream;
@@ -14,7 +11,7 @@ using std::endl;
 #define BT_CPP
 
 template <typename T>	// WORKS
-bool BinarySearchTree<T>::insert(const T &ref) {
+auto BinarySearchTree<T>::insert(const T &ref) -> bool {
 	this->existed += 1;
 	unique_ptr<node<T>> m_node(new node<T>(ref));
 
@@ -30,6 +27,9 @@ bool BinarySearchTree<T>::insert(const T &ref) {
 			prev = temp;
 			if (temp->data < ref) {
 				temp = temp->right.get();
+			}
+			else if (temp->data == ref) {
+				throw std::logic_error("Already exist");
 			}
 			else {
 				temp = temp->left.get();
@@ -48,13 +48,86 @@ bool BinarySearchTree<T>::insert(const T &ref) {
 }
 
 template <typename T>	// WORKS
-node<T> * BinarySearchTree<T>::search(const T &key) {
+auto BinarySearchTree<T>::remove(const T &key) -> node<T> * {
+	if (search(key) == nullptr) {
+		throw std::invalid_argument("Wrong index");
+	}
+	node<T> * leaf = root.get();
+	return remove(key, leaf);
+}
+
+template<typename T>	// HARD, BUT WORKS
+auto BinarySearchTree<T>::remove(const T &key, node<T> * leaf) -> node<T> * {
+	// C - crutches
+	if (leaf == nullptr) {
+		return leaf;
+	}
+
+	if ((leaf->left.get() != nullptr) && ((leaf->left.get())->data == key)) {
+		if (((leaf->left.get())->left.get() == nullptr) && ((leaf->left.get())->right.get() == nullptr)) {
+			leaf->left.reset();
+			this->existed -= 1;
+			return leaf;
+		}
+	}
+	else if ((leaf->right.get() != nullptr) && ((leaf->right.get())->data == key)) {
+		if (((leaf->right.get())->left.get() == nullptr) && ((leaf->right.get())->right.get() == nullptr)) {
+			leaf->right.reset();
+			this->existed -= 1;
+			return leaf;
+		}
+	}
+	if (key < leaf->data) {
+		leaf = remove(key, leaf->left.get());
+	}
+	else if (key > leaf->data) {
+		leaf = remove(key, leaf->right.get());
+	}
+	else if ((leaf->left.get() != nullptr) && (leaf->right.get() != nullptr)) {
+		leaf->data = findMin(leaf->right)->data;
+		this->existed -= 1;
+		return leaf;
+	}
+	else {
+		if (leaf->left.get() != nullptr) {
+			leaf->data = (leaf->left.get())->data;
+			leaf->left.reset();
+			this->existed -= 1;
+			return leaf;
+		}
+		else {
+			leaf->data = (leaf->right.get())->data;
+			leaf->right = move((leaf->right.get())->right);
+			this->existed -= 1;
+			return leaf;
+		}
+	}
+	return leaf;
+}
+
+template<typename T>	// Works?.. Hmm...
+auto BinarySearchTree<T>::findMin(unique_ptr<node<T>>& leaf) -> node<T> * {
+	if (leaf->left.get() == nullptr) {
+		node<T> *tmp = new node<T>(leaf.get()->data);
+		if (((leaf.get())->right).get() == nullptr) {
+			leaf.reset();
+		}
+		else {
+			leaf = move((leaf.get()->right));
+		}
+		return tmp;
+	}
+	return findMin(leaf->left);
+}
+
+template <typename T>	// WORKS
+auto BinarySearchTree<T>::search(const T &key) -> node<T> * {
 	node<T>* leaf = root.get();
 	return search(key, leaf);
 }
 
 template <typename T>	// WORKS
-node<T> * BinarySearchTree<T>::search(const T & key, node<T>* leaf) {
+auto BinarySearchTree<T>::search(const T & key, node<T>* leaf) -> node<T> * {
 	if (leaf != nullptr) {
 		if (key == leaf->data) {
 			return leaf;
@@ -67,34 +140,44 @@ node<T> * BinarySearchTree<T>::search(const T & key, node<T>* leaf) {
 		}
 	}
 	else {
-		throw searchError();
+		throw std::invalid_argument("Wrong index");
 	}
 }
 
 template <typename T>	// WORKS
-size_t BinarySearchTree<T>::getCount() const {
+auto BinarySearchTree<T>::getCount() const -> size_t {
 	return this->count;
 }
 
 template<typename T>	// WORKS
-size_t BinarySearchTree<T>::getNumber() const {
+auto BinarySearchTree<T>::getNumber() const -> size_t {
 	return this->existed;
 }
 
 template <typename T>	// WORKS
-bool BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os) {
-	if (m_node == nullptr) {
+auto BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os = std::cout, size_t width = 0) -> bool {
+	node<T>* tmp = m_node.get();
+
+	if (m_node.get() == nullptr) {
 		return true;
 	}
-	print(m_node->left, os);
+	if (tmp->left.get() != nullptr) {
+		print(tmp->left, os, width + 3);
+	}
+	if (width) {
+		os.width(width);
+		os << ' ';
+	}
 	os << m_node->data << endl;
-	print(m_node->right, os);
+	if (tmp->right.get()) {
+		print(tmp->right, os, width + 3);
+	}
 }
 
 template <typename T>	// WORKS
-ostream & operator <<(ostream & os, const BinarySearchTree<T> & x) {
+ostream & operator <<(ostream & os, BinarySearchTree<T> & x) {
 	if (x.root == nullptr) {
-		throw emptyTree();
+		throw std::logic_error("Empty tree");
 	}
 	x.print(x.root, os);
 
@@ -105,20 +188,15 @@ template <typename T>	// WORKS
 istream & operator >>(istream & input, BinarySearchTree<T> & x) {
 	T temp;
 	if (x.count == 0) {
-		throw emptyTree();
+		throw std::logic_error("Empty tree");
 	}
 	else {
 		for (size_t i = 0; i < x.count; ++i) {
-			try {
-				if (input >> temp) {
-					x.insert(temp);
-				}
-				else {
-					throw invalidFile();
-				}
+			if (input >> temp) {
+				x.insert(temp);
 			}
-			catch (...) {
-				throw invalidFile();
+			else {
+				throw std::logic_error("Error in input stream");
 			}
 		}
 		return input;
@@ -128,7 +206,7 @@ istream & operator >>(istream & input, BinarySearchTree<T> & x) {
 template <typename T>	//WORKS
 fstream & operator <<(fstream &file, BinarySearchTree<T> & x) {
 	if (x.count == 0) {
-		throw emptyTree();
+		throw std::logic_error("Empty tree");
 	}
 	x.print(x.root, file);
 
@@ -139,20 +217,15 @@ template <typename T>	// WORKS
 fstream & operator >>(fstream &file, BinarySearchTree<T> & x) {
 	T temp;
 	if (x.count == 0) {
-		throw emptyTree();
+		throw std::logic_error("Empty tree");
 	}
 	else {
 		for (size_t i = 0; i < x.count; ++i) {
-			try {
-				if (file >> temp) {
-					x.insert(temp);
-				}
-				else {
-					throw invalidFile();
-				}
+			if (file >> temp) {
+				x.insert(temp);
 			}
-			catch (...) {
-				throw invalidFile();
+			else {
+				throw std::logic_error("Error in input stream");
 			}
 		}
 		return file;
