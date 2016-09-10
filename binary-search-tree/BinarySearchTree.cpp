@@ -211,12 +211,12 @@ auto BinarySearchTree<T>::getRoot() -> T {
 }
 
 template<typename T>
-auto BinarySearchTree<T>::begin() -> std::_Vector_iterator<std::_Simple_types<T>> {
+auto BinarySearchTree<T>::begin() {
 	return elements.begin();
 }
 
 template<typename T>
-auto BinarySearchTree<T>::end() -> std::_Vector_iterator<std::_Simple_types<T>> {
+auto BinarySearchTree<T>::end() {
 	elements.clear();
 	elements = this->createVector();
 	return elements.end();
