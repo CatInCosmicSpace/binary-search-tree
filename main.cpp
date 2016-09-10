@@ -1,4 +1,4 @@
-#include "BinarySearchTree.h"
+#include "BinarySearchTree.hpp"
 
 using std::cout;
 using std::cin;
