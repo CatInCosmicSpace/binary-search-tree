@@ -58,22 +58,23 @@ private:
 	auto		search(const T&, node<T>*)->node<T> *;
 	auto		createVector(const unique_ptr<node<T>> &m_node, vector<T> &elem)->vector<T>;
 public:
-	BinarySearchTree() : root(nullptr), count(0), existed(0) {};					// TESTED
-	BinarySearchTree(size_t k) : root(nullptr), count(k), existed(0) {};			// TESTED
-	BinarySearchTree(const std::initializer_list<T> &list);							// WORKS
+	BinarySearchTree() : root(nullptr), count(0), existed(0) {};			// TESTED
+	BinarySearchTree(size_t k) : root(nullptr), count(k), existed(0) {};	// TESTED
+	BinarySearchTree(const std::initializer_list<T> &list);					// TESTED
 
-	auto		insert(const T&)->bool; 									// TESTED
-	auto		remove(const T&)->node<T> *;								// tested?..
-	auto		search(const T&)->node<T> *;								// TESTED
-	auto		getCount() const->size_t;									// TESTED
-	auto		getNumber() const->size_t;
-	auto		createVector()->vector<T>;
-	auto		getRoot()->T;
+	auto		insert(const T&)->bool;			// TESTED
+	auto		remove(const T&)->node<T> *;	// TESTED
+	auto		search(const T&)->node<T> *;	// TESTED
+	auto		getCount() const->size_t;		// TESTED
+	auto		getNumber() const->size_t;		// TESTED
+	auto		createVector()->vector<T>;		// TESTED
+	auto		getRoot()->T;					// TESTED
 	auto		begin();
 	auto		end();
 
-	friend		istream & operator >> <>(istream &, BinarySearchTree &);		// TESTED
-	friend		fstream & operator >> <>(fstream &, BinarySearchTree &);		// TESTED
+	bool		operator ==(BinarySearchTree &);							// TESTED
+	friend		istream & operator >> <>(istream &, BinarySearchTree &);	// TESTED
+	friend		fstream & operator >> <>(fstream &, BinarySearchTree &);	// TESTED
 	friend		ostream & operator<< <>(ostream &, BinarySearchTree &);		// TESTED
 	friend		fstream & operator<< <>(fstream &, BinarySearchTree &);		// TESTED
 };
