@@ -69,8 +69,8 @@ public:
 	auto		getNumber() const->size_t;		// TESTED
 	auto		createVector()->vector<T>;		// TESTED
 	auto		getRoot()->T;					// TESTED
-	auto		begin() -> std::_Vector_iterator<std::_Simple_types<T>>;
-	auto		end()->std::_Vector_iterator<std::_Simple_types<T>>;
+	auto		begin();
+	auto		end();
 
 	bool		operator ==(BinarySearchTree &);							// TESTED
 	friend		istream & operator >> <>(istream &, BinarySearchTree &);	// TESTED
