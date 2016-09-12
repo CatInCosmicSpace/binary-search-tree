@@ -69,8 +69,8 @@ public:
 	auto		getNumber() const->size_t;		// TESTED
 	auto		createVector()->vector<T>;		// TESTED
 	auto		getRoot()->T;					// TESTED
-	auto		begin();
-	auto		end();
+	auto		begin() -> decltype(elements.begin());
+	auto		end() -> decltype(elements.end());
 
 	bool		operator ==(BinarySearchTree &);							// TESTED
 	friend		istream & operator >> <>(istream &, BinarySearchTree &);	// TESTED
