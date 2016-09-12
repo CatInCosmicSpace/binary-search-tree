@@ -118,14 +118,14 @@ SCENARIO("Tree: delete root with one child", "[delete]") {
 
 SCENARIO("Tree: delete root with children", "[delete]") {
 	BinarySearchTree<int> tree1 = { 8, 4, 3, 10, 9, 13, 11, 12 };
-	tree.remove(8);
+	tree1.remove(8);
 	BinarySearchTree<int> tree2 = { 9, 4, 3, 10, 13, 11, 12 };
 	REQUIRE(tree1 == tree2);
 }
 
 SCENARIO("Tree: delete non root with children", "[delete]") {
 	BinarySearchTree<int> tree1 = { 8, 4, 3, 10, 9, 13, 11, 12 };
-	tree.remove(10);
+	tree1.remove(10);
 	BinarySearchTree<int> tree2 = { 8, 4, 3, 11, 9, 13, 12 };
 	REQUIRE(tree1 == tree2);
 }
