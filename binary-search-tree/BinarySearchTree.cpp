@@ -211,12 +211,12 @@ auto BinarySearchTree<T>::getRoot() -> T {
 }
 
 template<typename T>
-auto BinarySearchTree<T>::begin() {
+auto BinarySearchTree<T>::begin() -> decltype(elements.begin()) {
 	return elements.begin();
 }
 
 template<typename T>
-auto BinarySearchTree<T>::end() {
+auto BinarySearchTree<T>::end() -> decltype(elements.end()) {
 	elements.clear();
 	elements = this->createVector();
 	return elements.end();
@@ -297,20 +297,6 @@ istream & operator >> (istream & input, BinarySearchTree<T> & x) {
 template <typename T>	// WORKS
 fstream & operator >> (fstream & file, BinarySearchTree<T> & x) {
 	T temp;
-	//if (x.count == 0) {
-	//	throw std::logic_error("Empty tree");
-	//}
-	//else {
-	//	for (size_t i = 0; i < x.count; ++i) {
-	//		if (file >> temp) {
-	//			x.insert(temp);
-	//		}
-	//		else {
-	//			throw std::logic_error("Error in input stream");
-	//		}
-	//	}
-	//	return file;
-	//}
 	if (file.is_open()) {
 		while (!file.eof()) {
 			if (file >> temp) {
