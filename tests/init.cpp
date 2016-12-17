@@ -117,24 +117,24 @@ SCENARIO("Tree: delete root with one child", "[delete]") {
 }
 
 SCENARIO("Tree: delete root with children", "[delete]") {
-	BinarySearchTree<int> tree = { 8, 4, 3, 10, 9, 13, 11, 12 };
-	tree.remove(8);
-
-	REQUIRE(tree == BinarySearchTree<int>({ 9, 4, 3, 10, 13, 11, 12 }));
+	BinarySearchTree<int> tree1 = { 8, 4, 3, 10, 9, 13, 11, 12 };
+	tree1.remove(8);
+	BinarySearchTree<int> tree2 = { 9, 4, 3, 10, 13, 11, 12 };
+	REQUIRE(tree1 == tree2);
 }
 
 SCENARIO("Tree: delete non root with children", "[delete]") {
-	BinarySearchTree<int> tree = { 8, 4, 3, 10, 9, 13, 11, 12 };
-	tree.remove(10);
-
-	REQUIRE(tree == BinarySearchTree<int>({ 8, 4, 3, 11, 9, 13, 12 }));
+	BinarySearchTree<int> tree1 = { 8, 4, 3, 10, 9, 13, 11, 12 };
+	tree1.remove(10);
+	BinarySearchTree<int> tree2 = { 8, 4, 3, 11, 9, 13, 12 };
+	REQUIRE(tree1 == tree2);
 }
 
 SCENARIO("Tree: delete non root with one child", "[delete]") {
-	BinarySearchTree<int> tree = { 8, 4, 3, 10, 9, 13, 11, 12 };
-
-	REQUIRE(tree.remove(11));
-	REQUIRE(tree == BinarySearchTree<int>({ 8, 4, 3, 10, 9, 13, 12 }));
+	BinarySearchTree<int> tree1 = { 8, 4, 3, 10, 9, 13, 11, 12 };
+	BinarySearchTree<int> tree2 = { 8, 4, 3, 10, 9, 13, 12 };
+	REQUIRE(tree1.remove(11));
+	REQUIRE(tree1 == tree2);
 }
 
 SCENARIO("Tree: get root", "[get root]") {
