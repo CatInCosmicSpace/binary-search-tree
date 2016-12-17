@@ -11,12 +11,6 @@ SCENARIO("Tree: init, getCount(), getNumber()", "[init, getCount(), getNumber()]
 	REQUIRE(b2.getNumber() == 0);
 }
 
-SCENARIO("Tree: init with initializer list", "[init]") {
-	BinarySearchTree<int> tree = { 8 };
-
-	REQUIRE(tree.getNumber() == 1);
-}
-
 SCENARIO("Tree: search non inserted element", "[search]") {
 	BinarySearchTree<int> tree = { 8, 4, 3 };
 	bool flag = false;
