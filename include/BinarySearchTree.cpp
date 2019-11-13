@@ -11,7 +11,7 @@ using std::endl;
 #define BT_CPP
 
 template<typename T>
-BinarySearchTree<T>::BinarySearchTree(const std::initializer_list<T>& list) {
+BinarySearchTree<T>::BinarySearchTree(const std::initializer_list<T>& list) : root(nullptr), count(list.size()), existed(0) {
 	root = nullptr;
 	for (auto i : list) {
 		this->insert(i);
@@ -67,7 +67,7 @@ auto BinarySearchTree<T>::remove(const T &key) -> node<T> * {
 // DIFFICULT
 template<typename T>	// HARD, BUT WORKS
 auto BinarySearchTree<T>::remove(const T &key, node<T> * leaf) -> node<T> * {
-    // C - crutches
+        // C - crutches
     if (leaf == nullptr) {
         return leaf;
     }
@@ -100,16 +100,22 @@ auto BinarySearchTree<T>::remove(const T &key, node<T> * leaf) -> node<T> * {
     else {
         if (leaf->left.get() != nullptr) {
             leaf->data = (leaf->left.get())->data;
-            leaf->left.reset();
+			leaf->left = move((leaf->left.get())->left);
             this->existed -= 1;
             return leaf;
         }
-        else {
+        else if (leaf->right.get() != nullptr) {
             leaf->data = (leaf->right.get())->data;
             leaf->right = move((leaf->right.get())->right);
             this->existed -= 1;
             return leaf;
         }
+		else if (root.get() == leaf) {
+			root.reset();
+			this->existed -= 1;
+			root = nullptr;
+			return nullptr;
+		}
     }
     return leaf;
 }
@@ -204,7 +210,7 @@ auto BinarySearchTree<T>::end() -> decltype(elements.end()) {
 }
 
 template<typename T>
-bool BinarySearchTree<T>::operator==(BinarySearchTree & x) {
+bool BinarySearchTree<T>::operator==(const BinarySearchTree & x) {
 	elements.clear();
 	elements = this->createVector();
 	vector<T> t1, t2;
@@ -243,16 +249,6 @@ ostream & operator <<(ostream & os, BinarySearchTree<T> & x) {
     }
     x.print(x.root, os);
     return os;
-}
-
-template <typename T>	//WORKS
-fstream & operator << (fstream & file, BinarySearchTree<T> & x) {
-	if (x.existed == 0) {
-		throw std::logic_error("Empty tree");
-	}
-	x.print(x.root, file);
-
-	return file;
 }
 
 template <typename T>	// WORKS

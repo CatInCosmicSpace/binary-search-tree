@@ -1,5 +1,5 @@
 #include "BinarySearchTree.h"
-#include <catch.hpp>
+#include "catch.hpp"
 #include <fstream>
 
 SCENARIO("Tree: init, getCount(), getNumber()", "[init, getCount(), getNumber()]") {
@@ -99,14 +99,12 @@ SCENARIO("Tree: remove", "[remove]") {
 SCENARIO("Tree: delete root without children", "[delete]") {
 	BinarySearchTree<int> tree = { 8 };
 	tree.remove(8);
-
 	REQUIRE(tree.getNumber() == 0);
 }
 
 SCENARIO("Tree: delete root with one child", "[delete]") {
 	BinarySearchTree<int> tree = { 8, 4, 3 };
 	tree.remove(8);
-
 	REQUIRE(((tree.search(4) != nullptr) && (tree.search(3) != nullptr)));
 }
 

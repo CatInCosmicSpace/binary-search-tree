@@ -72,7 +72,7 @@ public:
 	auto		begin() -> decltype(elements.begin());
 	auto		end() -> decltype(elements.end());
 
-	bool		operator ==(BinarySearchTree &);							// TESTED
+	bool		operator ==(const BinarySearchTree &);				// TESTED
 	friend		istream & operator >> <>(istream &, BinarySearchTree &);	// TESTED
 	friend		fstream & operator >> <>(fstream &, BinarySearchTree &);	// TESTED
 	friend		ostream & operator<< <>(ostream &, BinarySearchTree &);		// TESTED
